@@ -73,5 +73,7 @@ public class AddGiftActivity extends AppCompatActivity {
         );
 
         GiftRepository.getInstance().save(gift);
+
+        onBackPressed();
     }
 }
