@@ -1,6 +1,8 @@
 package br.com.up.listapresentesprof;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -31,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewGifts = findViewById(R.id.recycler_gifts);
         textViewGiftsNotFound = findViewById(R.id.text_gifts_not_found);
 
-        recyclerViewGifts.setAdapter(new GiftAdapter());
+        recyclerViewGifts.setLayoutManager(
+                //new GridLayoutManager(this,10)
+                new LinearLayoutManager(this)
+        );
 
         buttonAddGift = findViewById(R.id.button_add);
         buttonAddGift.setOnClickListener(
@@ -48,14 +53,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         ArrayList<Gift> gifts = GiftRepository.getInstance().get();
-
-        if(gifts.isEmpty()){
-
+        if(gifts.size() > 0){
+            textViewGiftsNotFound.setVisibility(View.INVISIBLE);
+        }else{
+            textViewGiftsNotFound.setVisibility(View.VISIBLE);
         }
+        GiftAdapter giftAdapter = new GiftAdapter(gifts);
+        recyclerViewGifts.setAdapter(giftAdapter);
     }
 }
